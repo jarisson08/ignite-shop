@@ -1,12 +1,10 @@
 import { useKeenSlider } from 'keen-slider/react';
 import Image from "next/future/image"
 import { HomeContainer, Product } from "../../styles/pages/home"
-import camiseta1 from '../../public/2_explorer-t-shirt 1.png'
-import camiseta2 from '../../public/Camisa-Maratona 1.png'
-import camiseta3 from '../../public/IgniteLab-T-shirt 1.png'
 import 'keen-slider/keen-slider.min.css'
 import { stripe } from '../lib/stripe';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps, GetServerSideProps } from 'next';
+import Link from "next/link"
 import Stripe from 'stripe';
 
 interface HomeProps {
@@ -31,7 +29,9 @@ export default function Home({products}: HomeProps) {
     <HomeContainer className="keen-slider__slide" ref={sliderRef}>
  
       {products.map(product => {
+        console.log(products)
         return (
+          <Link href={`/product/${product.id}`} key={product.id}>
           <Product key={product.id} className="keen-slider__slide">
           <Image src={product.imageUrl} width={520} height={480} alt="" />
             
@@ -40,6 +40,7 @@ export default function Home({products}: HomeProps) {
             <span>{product.price}</span>
           </footer>
         </Product>
+        </Link>
         )
       })}
    
@@ -60,12 +61,16 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount / 100,
+      price: new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(price.unit_amount / 100),
     }
 
   })
   
   return{
-    props:{products}
+    props:{products},
+    
   }
 }
