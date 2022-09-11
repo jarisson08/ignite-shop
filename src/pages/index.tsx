@@ -29,10 +29,10 @@ export default function Home({products}: HomeProps) {
     <HomeContainer className="keen-slider__slide" ref={sliderRef}>
  
       {products.map(product => {
-        console.log(products)
+        
         return (
-          <Link href={`/product/${product.id}`} key={product.id}>
-          <Product key={product.id} className="keen-slider__slide">
+          <Link href={`/product/${product.id}`} key={product.id} prefetch={false}>
+          <Product className="keen-slider__slide">
           <Image src={product.imageUrl} width={520} height={480} alt="" />
             
           <footer>
@@ -71,6 +71,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
   
   return{
     props:{products},
-    
+      
   }
 }
