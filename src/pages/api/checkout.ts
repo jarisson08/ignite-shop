@@ -6,15 +6,15 @@ import { stripe } from "../../lib/stripe";
 export default async function handleCheckoutSession(req: NextApiRequest, res: NextApiResponse){
     const {priceId}= req.body
 
-    if(req.method=="GET"){
+    if(req.method!=="POST"){
         return res.status(405).json({error: 'Method not allowed'})
     }
 
     if(!priceId){
         return res.status(400).json({error: 'Price not found'})
     }
-    const sucessURL= `${process.env.NEXT_URL}/sucess?session_id={CHECKOUT_SESSION_ID}`
-    const cancelURL= `${process.env.NEXT_URL}/`
+    const sucessURL= 'http://localhost:3000/sucess?session_id={CHECKOUT_SESSION_ID}'
+    const cancelURL= 'http://localhost:3000'
     
     const checkoutSession= await stripe.checkout.sessions.create({
         mode: 'payment',
