@@ -30,7 +30,7 @@ export default function Home({products}: HomeProps) {
 
    <>
     <Head>
-    <title>Compra efetuada | Ignite Shop</title>
+    <title>Shop</title>
 
     <meta name='robots' content='noindex'/>
   </Head>
